@@ -33,20 +33,23 @@ def md5(args):
     pwd.update(bytes(args,encoding='utf-8'))
     return pwd.hexdigest()
 
-
-
-@app.route('/',methods = ['GET','POST'])
-def index(page = 1):
+def checkUser():
     id = ''
+    user = ''
     if 'id' in session:
         id = session['id']
     if id == '':
         id = request.cookies.get(COOKIE_NAME)
-    users = Users.query.filter_by(id = id).all()
+    users = Users.query.filter_by(id=id).all()
     if len(users) == 0:
-        user= ''
+        user = ''
     else:
-        user =users[0]
+        user = users[0]
+    return user
+
+@app.route('/',methods = ['GET','POST'])
+def index(page = 1):
+    user = checkUser()
     page = request.args.get('page',1,type = int)
     pagination = Blogs.query.order_by(Blogs.created_at.desc()).paginate(page,per_page = POSTS_PER_PAGE,error_out = False)
     blogs = pagination.items
@@ -59,16 +62,7 @@ def index(page = 1):
     )
 @app.route('/blog/<id>',methods=['GET','POST'])
 def read_blog(id):
-    user_id = ''
-    if 'id' in session:
-        user_id = session['id']
-    if user_id == '':
-        user_id = request.cookies.get(COOKIE_NAME)
-    users = Users.query.filter_by(id = user_id).all()
-    if len(users) == 0:
-        user = ''
-    else:
-        user = users[0]
+    user = checkUser()
     blogs = Blogs.query.filter_by(id = id).all()
     if len(blogs) == 0:
         blog = ''
@@ -197,16 +191,7 @@ def register():
 
 @app.route('/blogs/create',methods = ['GET','POST'])
 def blog_create():
-    user_id = ''
-    if 'id' in session:
-        user_id = session['id']
-    if user_id == '':
-        user_id = request.cookies.get(COOKIE_NAME)
-    users = Users.query.filter_by(id=user_id).all()
-    if len(users) == 0:
-        user = ''
-    else:
-        user = users[0]
+    user = checkUser()
     if user == '' or user.admin == 0:
         return redirect('/')
     form = BlogTextForm()
@@ -229,16 +214,7 @@ def blog_create():
 
 @app.route('/blogs')
 def manage_blogs():
-    user_id = ''
-    if 'id' in session:
-        user_id = session['id']
-    if user_id == '':
-        user_id = request.cookies.get(COOKIE_NAME)
-    users = Users.query.filter_by(id=user_id).all()
-    if len(users) == 0:
-        user = ''
-    else:
-        user = users[0]
+    user = checkUser()
     if user == '' or user.admin == 0:
         return redirect('/')
     blogs = index_data()
@@ -258,16 +234,7 @@ def blog_delete(id):
 
 @app.route('/blogs_edit/<id>',methods = ['GET','POST'])
 def blog_edit(id):
-    user_id = ''
-    if 'id' in session:
-        user_id = session['id']
-    if user_id == '':
-        user_id = request.cookies.get(COOKIE_NAME)
-    users = Users.query.filter_by(id=user_id).all()
-    if len(users) == 0:
-        user = ''
-    else:
-        user = users[0]
+    user = checkUser()
     if user == '' or user.admin == 0:
         return redirect('/')
     form = BlogTextForm()
@@ -291,16 +258,9 @@ def blog_edit(id):
 
 @app.route('/user/edit',methods = ['GET','POST'])
 def user_edit():
-    user_id = ''
-    if 'id' in session:
-        user_id = session['id']
-    if user_id == '':
-        user_id = request.cookies.get(COOKIE_NAME)
-    users = Users.query.filter_by(id=user_id).all()
-    if len(users) == 0:
+    user = checkUser()
+    if user == '':
         return redirect('/')
-    else:
-        user = users[0]
     form = UserInfoForm()
     if request.method == 'GET':
         return render_template(
@@ -313,21 +273,14 @@ def user_edit():
         name = form.name.data
         image = request.files['image'].read()
         Users.query.filter_by(id = user.id).update({'name':name,'image':image})
+        Blogs.query.filter_by(user_id = user.id).update({'user_name':name,'user_image':image})
+        Comments.query.filter_by(user_id = user.id).update({'user_name':name,'user_image':image})
         db.session.commit()
         return redirect('/')
 
 @app.route('/user/<id>')
 def user(id):
-    user_id = ''
-    if 'id' in session:
-        user_id = session['id']
-    if user_id == '':
-        user_id = request.cookies.get(COOKIE_NAME)
-    users = Users.query.filter_by(id=user_id).all()
-    if len(users) == 0:
-        user = ''
-    else:
-        user = users[0]
+    user = checkUser()
     user_info = Users.query.filter_by(id = id).all()[0]
     user_blog = Blogs.query.filter_by(user_id = id).order_by(Blogs.created_at.desc()).limit(3).all()
     user_comment = Comments.query.filter_by(user_id = id).order_by(Comments.created_at.desc()).limit(3).all()
