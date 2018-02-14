@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% block title %}{{ blog.name }}{% endblock %}
+{% block beforehead %}
+    <link rel="stylesheet" href="../static/css/comment.css">
+    <script>
+    </script>
+{% endblock %}
+{% block content %}
+    <div class="blog-content">
+        <article>
+            <div style="margin-left: 20px;">
+                <h2>{{ blog.name }}</h2>
+                <div>
+                    <!-- JiaThis Button BEGIN -->
+                    <div id="ckepop">
+                        <span class="jiathis_txt">分享到：</span>
+                        <a class="jiathis_button_qzone">QQ空间</a>
+                        <a class="jiathis_button_weixin">微信</a>
+                        <a class="jiathis_button_tools4">分享网址</a>
+                        <a class="jiathis_button_cqq">QQ</a>
+                        <a class="jiathis_counter_style"></a>
+                    </div>
+                    <script type="text/javascript" src="http://v2.jiathis.com/code/jia.js" charset="utf-8"></script>
+                    <script src="http://v2.jiathis.com/code/jiathis_r.js?move=0"></script>
+                    <script type=text/javascript">
+                    var jiathis_config = {
+                    url: "http://www.yourdomain.com",
+                    title: "自定义网页标题 #微博话题#",
+                    summary:"分享的文本摘要"
+                    }
+                    </script>
+                    <!-- JiaThis Button END -->
+                </div>
+                <hr style="margin-right: 20px;">
+                <p style="font-size: 17px;">{{ blog.htmlcontent|safe }}</p>
+                <p style="font-size: 12px;">{{ blog.user_name }}发表于 {{ blog.created_at }}</p>
+            </div>
+        </article>
+    </div>
+     <div class="comment" style="border-radius: 10px;background: white;">
+     <div style="margin-left: 20px">
+     {% if user %}
+        <h3>发表评论</h3>
+        <article>
+            <div>
+                {% if user.image %}
+                <img width="80" height="80" src="data:;base64,{{ base64.b64encode(user.image).decode('utf-8') }}" style="border-radius: 50%;">
+                {% else %}
+                <img src="../static/img/register-logo.png" height="80" width="80" style="border-radius: 50%;">
+                {% endif %}
+                <span style="font-size: 20px;">{{ user.name }}</span>
+            </div>
+            <div >
+                <form method = "POST">
+                    <div style="margin-top: 10px;margin-left: 10px;">
+                        {{ form.comment(class="comment_text") }}
+                    </div>
+                    <div style="margin-top: 10px;">
+                        <button type="submit" style="margin-left: 10px;border-radius: 3px;background-color: #0f88eb;color: white;border:none;font-size: 16px"><img src="../static/img/comment.png" width="16" height="16">发表评论</button>
+                    </div>
+                </form>
+            </div>
+        </article>
+             <hr style="margin-right: 20px">
+         {% endif %}
+            <h3>最新评论</h3>
+                {% for comment in comments %}
+                    <article>
+                        <header>
+                            <a href="/user/{{ comment.user_id }}">
+                                {% if comment.user_image %}
+                                <img width="60" height="60" src="data:;base64,{{ base64.b64encode(comment.user_image).decode('utf-8')}}" style="border-radius: 50%;">
+                                {% else %}
+                                    <img width="60" height="60" src="../static/img/register-logo.png" style="border-radius: 50%">
+                                {% endif %}
+                            </a>
+                            {{ comment.user_name }} {% if comment.user_id == blog.user_id %}(本文作者){% endif %}发表于{{ comment.created_at }}:
+                        </header>
+                    <div style="margin-left: 64px;font-size: 17px;">
+                        <p>{{ comment.content }}</p>
+                    </div>
+                        <hr style="margin-right: 20px;">
+                    </article>
+                {% else %}
+                <p>还没有人评论...</p>
+                {% endfor %}
+         </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block title %}{{ user_info.name }}的主页{% endblock %}
+{% block beforehead %}
+    <link rel="stylesheet" href="../static/css/user_index.css">
+{% endblock %}
+{% block content %}
+    <div class="main">
+    <article style="margin-left: 30px;">
+        <div class="userInfo">
+        {% if user_info.image %}
+            <img src="data:;base64,{{ base64.b64encode(user_info.image).decode('utf-8') }}" width="150" height="150" id="userInfoImage">
+            {% else %}
+            <img src="../static/img/register-logo.png" width="150" height="150" style="border-radius: 50%;">
+        {% endif %}
+            <span>用户名:{{ user_info.name }}</span>
+            <span>邮箱账号:{{ user_info.email }}</span>
+            <span>账号创建时间:{{ user_info.created_at }}</span>
+            {% if user.id == user_info.id %}
+            <span><a href="/user/edit" style="font-size: 18px;">修改信息>></a></span>
+            {% endif %}
+        </div>
+        <hr style="margin-right: 30px;">
+    <h3>最近动态</h3>
+        <div class="userBlog">
+                <h4>最近的文章</h4>
+                <hr>
+                {% for blog in user_blog %}
+                    <div>
+                        <a href="/blog/{{ blog.id }}">
+                        <span>{{ blog.name }}</span>
+                        </a>
+                         <span style="float: right;font-size: 15px;">发表于{{ blog.created_at }}</span>
+                        <a href="/blog/{{ blog.id }}">
+                        <p><span style="font-size: 15px;">{{ blog.summary }}</span>
+                            <span style="font-size: 15px;float: right;">继续阅读>></span>
+                        </p>
+                        </a>
+                    <hr>
+                    </div>
+                {% endfor %}
+            </div>
+        <div class="userComment">
+            <h4>最近评论</h4>
+            <hr>
+            {% for comment in user_comment %}
+                评论内容：<span>{{ comment.content }}</span>
+                <span style="float: right;">发表于{{ comment.created_at }}</span>
+                <p>文章名：<span><a href="/blog/{{ comment.blog_id }}">{{ comment.blog_name }}</a></span>
+                <span style="float: right;"><a href="/blog/{{ comment.blog_id }}" style="font-size: 15px;">过去看看>></a></span>
+                </p>
+                <hr>
+            {% endfor %}
+        </div>
+    </article>
+    </div>
+{% endblock %}

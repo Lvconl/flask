@@ -1,0 +1,39 @@
+{% extends'base.html' %}
+{% block title %}编辑文章{% endblock %}
+{% block beforehead %}
+    <link rel="stylesheet" href="../static/css/blog_edit.css">
+    <script>
+    </script>
+{% endblock %}
+{% block content %}
+    <div class="blog">
+    <h2 style="margin-left: 20px;">日志添加</h2>
+       <div style="margin-left: 20px" class="input-group">
+           <form method="post">
+               {{ form.hidden_tag() }}
+               <div>
+                   <label>标题:</label>
+                   <div>
+                       {{ form.name(class = 'title',id = 'name')}}
+                   </div>
+               </div>
+               <div>
+                   <label>摘要:</label>
+                   <div>
+                       {{ form.summary(class = 'summary',id = 'summary') }}
+                   </div>
+               </div>
+               <div>
+                   <label>内容:</label>
+                   <div>
+                       {{ form.content(class = 'context',id = 'content') }}
+                   </div>
+               </div>
+               <div style="margin-top: 20px">
+                   <button type="submit" style="border-radius: 3px;background-color: #0f88eb;color: white;border:none;font-size: 20px;margin-bottom: 10px;"><img src="../static/img/save.png" width="16" height="16">保存</button>
+                   <a href="/" style="font-size: 20px;margin-left: 10px;">取消</a>
+               </div>
+           </form>
+       </div>
+   </div>
+{% endblock %}

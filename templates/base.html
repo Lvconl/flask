@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% block meta %} {% endblock %}
+    <title>{% block title %}?{% endblock %}</title>
+    <link rel="stylesheet" href="../static/css/base.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/style.css" />
+    <script type="text/javascript" src="../static/js/jquery.js"></script>
+    {% block beforehead %} {% endblock %}
+</head>
+<body id="botAgregar">
+<script type="text/javascript">$.AutomLeafStart({leafsfolder:"../static/images/",howmanyimgsare:8,initialleafs:10,maxYposition:-10,multiplyclick:true,multiplynumber:2,infinite:true,fallingsequence:4000});$("#botAgregar").on("click",function(){$.AutomLeafAdd({leafsfolder:"../static/images/",add:8,})});</script>
+<div class="layout" style="width:1400px; margin:auto; line-height:30px; margin-top:90px;">
+<header>
+    <div class="logo"></div>
+    <div class="content">
+        <div class="home">
+            <a href="/">首页</a>
+        </div>
+        <div class="find">
+            <a href="/">发现</a>
+        </div>
+        <div class="code">
+            <a href="/">源码</a>
+        </div>
+    </div>
+     {% if user %}
+    <div class="person">
+        <a style="margin-left: 7px;">{{ user.name }}</a>
+        <div style="margin-top: 1px; float: left;">
+            {% if user.image %}
+                <img src="data:;base64,{{ base64.b64encode(user.image).decode('utf-8') }}" width="32" height="32" style="border-radius: 50%;">
+            {% else %}
+                <img src="../static/img/register-logo.png" width="32" height="32" style="border-radius: 50%;">
+            {% endif %}
+        </div>
+        <div class="person-content" style="font-size: 19px;">
+            {% if user.admin == 1 %}
+            <p><a href="/blogs/create"><img src="../static/img/plus.png" width="16" height="16">日志添加</a></p>
+            <p><a href="/blogs"><img src="../static/img/setting.png" width="16" height="16">日志管理</a></p>
+            {% endif %}
+            <p><a href="/user/{{ user.id }}"><img src="../static/img/info.png" height="16" width="16">个人主页</a>
+            <p><a href="/signout"><img src="../static/img/exit.png" width="16" height="16">退出登录</a></p>
+        </div>
+    </div>
+    {% else %}
+        <div class="person">
+            <a href="/login">登录</a>
+        </div>
+    {% endif %}
+</header>
+    {% block content %}
+    {% endblock %}
+<footer>
+    <p>
+        友情链接:
+        <a href="https://github.com/Lvconl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="../static/img/GitHub.png"></a>
+        <a href="/">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="../static/img/school.png"></a>
+    </p>
+    <p>Powered by <a href="mailto:835132735@qq.com">lvconl </a>Copyright @copy; 2018.</p>
+    <a href="https://github.com/Lvconl" target="_blank">lvconl</a>.All right reserved.
+</footer>
+</div>
+</body>
+</html>

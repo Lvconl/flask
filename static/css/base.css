@@ -1,0 +1,71 @@
+body{
+    background: #d5d5d5;
+}
+header{
+    background: white;
+    height: 48px;
+    border-radius: 10px;
+}
+footer{
+    border-radius: 10px;
+    text-align: center;
+    background: white;
+}
+a{
+    text-decoration: none;
+    color: #555555;
+}
+article{
+    border-radius: 10px;
+    background: white;
+}
+a:hover{
+    color: #000000;
+}
+.logo{
+    float: left;
+    margin-left: 400px;
+    width: 48px;
+    height: 48px;
+    background: url("../img/blog.png");
+}
+.content{
+    font-size: 18px;
+}
+.home{
+    margin-top: 13px;
+    float: left;
+    margin-left: 80px;
+}
+.find{
+    margin-top: 13px;
+    margin-left: 80px;
+    float: left;
+}
+.code{
+    margin-top: 13px;
+    margin-left: 80px;
+    float: left;
+}
+.person {
+    margin-top: 13px;
+    margin-left: 200px;
+    position: relative;
+    display: inline-block;
+}
+.person-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 110px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    padding: 12px 16px;
+}
+.person:hover .person-content {
+    display: block;
+}
+button{
+    font-size: 18px;
+    border: none;
+    background: none;
+}

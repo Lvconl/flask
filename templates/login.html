@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+    <link rel="stylesheet" href="../static/css/login.css">
+</head>
+<body>
+<div class="main">
+    <div class="header">
+        <h1 class="logo"></h1>
+        <h2 class="title">与世界分享你的知识、经验和见解</h2>
+    </div>
+    <div class="body">
+        <div class="signin">
+            <form method="post">
+                <div class="group-inputs">
+                    {{ form.hidden_tag() }}
+                    {% if error %}
+                    <span style="color: red">{{ error }}</span>
+                    {% endif %}
+                    <p>
+                        {{ form.name(size = 20,id = 'name') }}
+                    </p>
+                    <p>
+                        {{ form.password(size = 20,id = 'password') }}
+                    </p>
+                </div>
+            <div class="signin-other">
+                    <span class="remember">
+                    {{ form.remember }}
+                    <label for="remember-me">记住我</label>
+                    </span>
+                <a href="/register" class="unable-signin">注册账号</a>
+            </div>
+                <button type="submit">登录</button>
+            </form>
+
+        </div>
+    </div>
+</div>
+</body>

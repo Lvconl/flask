@@ -1,0 +1,23 @@
+.blog{
+    background: white;
+    border-radius: 10px;
+}
+label{
+    font-family: "Microsoft Yahei", sans-serif;
+    font-size: 20px;
+}
+.title{
+    width: 600px;
+    height: 20px;
+}
+.summary{
+    font-size: 18px;
+    width: 700px;
+    resize: none;
+}
+.context{
+    font-size: 20px;
+    width: 700px;
+    height: 250px;
+    resize: none;
+}

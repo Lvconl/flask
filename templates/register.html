@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>注册</title>
+    <link href="../static/css/login.css" rel="stylesheet" type="text/css">
+    <script src="../static/js/register.js"></script>
+</head>
+<body>
+<div class="main">
+    <div class="header">
+        <h1 class="logo"></h1>
+        <h2 class="title">欢迎来到这里</h2>
+    </div>
+    <div class="body">
+        <div class="signup">
+            <form method="post">
+                <div class="group-inputs">
+                    {{ form.hidden_tag() }}
+                    {% if error %}
+                    <span style="color: red">{{ error }}</span>
+                    {% endif %}
+                    {{ form.name(size = 20,id = 'name') }}
+                    {{ form.email(size = 20,id = 'email') }}
+                    {{ form.password(size = 20,id = 'password') }}
+                    {{ form.password1(size = 20,id = 'password') }}
+                </div>
+                <button type="submit">注册</button>
+            </form>
+            <div class="signin-foot">
+                    <span class="signin-duty">
+                        注册即代表你同意
+                        <a href="#">《协议》</a>
+                    </span>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
