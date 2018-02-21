@@ -31,3 +31,12 @@ class UserInfoForm(FlaskForm):
 
 class CommentForm(FlaskForm):
     comment = TextAreaField('comment',render_kw = {'placeholder':'快来说两句吧...'})
+
+class UpdatePasswdForm(FlaskForm):
+    email = StringField('email',render_kw = {'placeholder':'邮箱'})
+    originalPasswd = PasswordField('originalPasswd',render_kw = {'placeholder':'原密码'})
+    alterPasswd = PasswordField('alterPasswd',render_kw = {'placeholder':'新密码'})
+    reAlterPasswd = PasswordField('reAlterPasswd',render_kw = {'placeholder':'确认新密码'})
+
+class SearchForm(FlaskForm):
+    searchText = StringField('searchText',render_kw = {'placeholder':'搜点你感兴趣的...'})

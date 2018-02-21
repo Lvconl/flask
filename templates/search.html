@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}发现{% endblock %}
+{% block beforehead %}
+    <link rel="stylesheet" href="../static/css/search.css">
+{% endblock %}
+{% block content %}
+    <div class="search">
+        <div class="text">
+            <form method="post">
+                <input type="text" placeholder="搜索你感兴趣的..."/>
+                <button type="submit">搜索</button>
+            </form>
+        </div>
+    </div>
+    <div class="content">
+        <article>
+            <h3>以下是包含××的搜索结果</h3>
+            <div style="margin-left: 10px">
+                <h3><a href="/blog/{{blog.id}}" style="color: #0f88eb">{{blog.name}}</a></h3>
+                {{blog.summary}}
+            </div>
+            <div style="margin-left: 10px">
+                <h3><a href="/blog/{{blog.id}}" style="color: #0f88eb">{{blog.name}}</a></h3>
+                <p>{{blog.summary}}</p>
+            </div>
+        </article>
+    </div>
+{% endblock %}

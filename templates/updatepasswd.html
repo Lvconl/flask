@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block title %}修改密码{% endblock %}
+{% block beforehead %}
+    <link rel="stylesheet" href="../static/css/updatepasswd.css">
+<script>
+</script>
+{% endblock %}
+{% block content %}
+<div class="body">
+    <header>
+        <h2 class="title">修改密码</h2>
+    </header>
+    <div class="group-input">
+        <form method="post">
+            {{ form.hidden_tag() }}
+            {% if error %}
+            <span class="error">*{{ error }}</span>
+            {% endif %}
+        <table>
+            <tr>
+                <td>
+                    <label>邮箱账号:</label>
+                </td>
+                <td>
+                    {{ form.email }}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>原密码:</label>
+                </td>
+                <td>
+                    {{ form.originalPasswd }}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>新密码:</label>
+                </td>
+                <td>
+                    {{ form.alterPasswd }}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>确认新密码:</label>
+                </td>
+                <td>
+                    {{ form.reAlterPasswd }}
+                </td>
+            </tr>
+        </table>
+        <div class="group-submit">
+            <button type="submit"><img src="../static/img/submit.png" width="16" height="16">确认修改</button>
+            <a href="/">取消</a>
+        </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,38 @@
+.title{
+    margin-left: 20px;
+}
+.body{
+    background-color: white;
+    border-radius: 10px;
+}
+.group-input{
+margin-left: 30px;
+}
+.group-input label{
+    font-size: 20px;
+}
+.group-input input{
+    font-size: 15px;
+}
+td{
+    line-height: 50px;
+}
+.group-submit button{
+    border: none;
+    background-color: #0f88eb;
+    color: white;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+.group-submit a{
+    margin-left: 10px;
+    font-size: 20px;
+}
+.group-submit{
+    margin-left: 300px;
+    margin-bottom: 20px;
+}
+.error{
+    color: red;
+    font-size: 25px;
+}

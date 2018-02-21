@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block title %}{{ user.name }}的评论{% endblock %}
+{% block  beforehead %}
+    <link rel="stylesheet" href="../static/css/person_comment.css">
+{% endblock %}
+{% block content %}
+<div class="body">
+    <header>
+        <h2>评论管理</h2>
+    </header>
+    {% if comments %}
+        <article>
+        {% for comment in comments %}
+            <label>评论内容：</label>
+            <span>{{ comment.content }}</span>
+            <span style="float: right;">发表于：{{ comment.created_at }}</span>
+            <br>
+            <label>评论文章：</label>
+            <a href="/blog/{{ comment.blog_id }}"><span>{{ comment.blog_name }}</span></a>
+            <a href="/comment/{{ comment.id }}"><span style="float: right;">删除评论</span></a>
+            <hr>
+        {% endfor %}
+        <div class="page">
+    <ul style="list-style-type: none;">
+        {% if pagination.has_prev %}
+             <li>
+                  <a href="{{ url_for('.mycomments',page = pagination.page - 1) }}"><< 上一页</a>
+             </li>
+        {% endif %}
+        {% if pagination.has_next %}
+            <li>
+                <a href="{{ url_for('.mycomments',page = pagination.page + 1) }}">下一页 >></a>
+            </li>
+        {% endif %}
+    </ul>
+    </div>
+        </article>
+    {% else %}
+        <h2>暂时还没有评论</h2>
+    {% endif %}
+</div>
+{% endblock %}

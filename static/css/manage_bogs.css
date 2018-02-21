@@ -1,0 +1,24 @@
+.page ul li{
+    display: inline;
+    font-size: 15px;
+    margin-left: 20px;
+    font-family: "Microsoft Yahei", sans-serif;
+}
+.page ul{
+    text-align: center;
+    list-style-type: none;
+}
+.page li a{
+    color: #0f88eb;
+}
+.page li a:hover{
+    color: rgba(13, 3, 152, 0.93);
+}
+.page{
+    text-align: center;
+    border-radius: 10px;
+    width: 1300px;
+    height: 30px;
+    background-color: white;
+    margin-bottom: 10px;
+}

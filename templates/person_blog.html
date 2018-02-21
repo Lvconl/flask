@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% block title%}{{ user.name }}的文章{% endblock %}
+{% block beforehead %}
+    <link rel="stylesheet" href="../static/css/person_blog.css">
+{% endblock %}
+{% block content %}
+    <div class="body">
+    <div style="margin-left: 20px;">
+            <div>
+                <h2>日志管理</h2>
+            </div>
+                <div style="font-size: 19px;">
+                    <a href="/blogs/create">新日志</a>
+                    <div style="float: left;">
+                        <img src="../static/img/plus.png" width="16" height="16">
+                    </div>
+                </div>
+    {% if blogs %}
+                <table style="margin-top: 20px;">
+                    <thead>
+                    <tr>
+                        <th>标题/摘要</th>
+                        <th style="margin-left: 300px;width: 400px;">创作时间</th>
+                        <th style="margin-left: 300px;width: 400px;">操作</th>
+                    </tr>
+                    </thead>
+                    <hr style="margin-right: 20px;">
+                    <tbody>
+                    {% for blog in blogs %}
+                        <tr>
+                            <td style="width: 400px;">
+                                <a target="_blank" href="/blog/{{blog.id}}" style="margin-left: 165px;">{{ blog.name }}</a>
+                            </td>
+                            <td style="margin-left: 250px; width: 200px;">
+                                <span style="margin-left: 170px;">{{ blog.created_at }}</span>
+                            </td>
+                            <td style="margin-left: 290px; width: 200px;">
+                                <a style="margin-left: 181px;" href="/blogs_edit/{{ blog.id }}"><img src="../static/img/edit.png" width="16" height="16"></a>
+                                <a style="margin-left: 10px;" href="/blogs/delete/{{ blog.id }}" onclick="delete_blog()"><img src="../static/img/delete.png" width="16" height="16"></a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+        {% else %}
+        <hr>
+            <h1 style="margin-bottom: 20px;">日志为空</h1>
+        {% endif %}
+    <div class="page">
+    <ul>
+        {% if pagination.has_prev %}
+             <li>
+                  <a href="{{ url_for('.myblogs',page = pagination.page - 1) }}"><< 上一页</a>
+             </li>
+        {% endif %}
+        {% if pagination.has_next %}
+            <li>
+                <a href="{{ url_for('.myblogs',page = pagination.page + 1) }}">下一页 >></a>
+            </li>
+        {% endif %}
+    </ul>
+    </div>
+    </div>
+    </div>
+{% endblock %}
