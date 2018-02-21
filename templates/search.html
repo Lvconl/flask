@@ -6,23 +6,25 @@
 {% block content %}
     <div class="search">
         <div class="text">
+            {{ form.hidden_tag() }}
             <form method="post">
-                <input type="text" placeholder="搜索你感兴趣的..."/>
+                {{ form.searchText }}
                 <button type="submit">搜索</button>
             </form>
         </div>
     </div>
+    {% if blogs %}
     <div class="content">
         <article>
-            <h3>以下是包含××的搜索结果</h3>
+            <h3>以下是包含{{ text }}的搜索结果</h3>
+            {% for blog in blogs %}
             <div style="margin-left: 10px">
                 <h3><a href="/blog/{{blog.id}}" style="color: #0f88eb">{{blog.name}}</a></h3>
                 {{blog.summary}}
             </div>
-            <div style="margin-left: 10px">
-                <h3><a href="/blog/{{blog.id}}" style="color: #0f88eb">{{blog.name}}</a></h3>
-                <p>{{blog.summary}}</p>
-            </div>
+            <hr>
+            {% endfor %}
         </article>
     </div>
+    {% endif %}
 {% endblock %}

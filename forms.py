@@ -39,4 +39,4 @@ class UpdatePasswdForm(FlaskForm):
     reAlterPasswd = PasswordField('reAlterPasswd',render_kw = {'placeholder':'确认新密码'})
 
 class SearchForm(FlaskForm):
-    searchText = StringField('searchText',render_kw = {'placeholder':'搜点你感兴趣的...'})
+    searchText = StringField('searchText',render_kw = {'placeholder':'搜索你感兴趣的...'})

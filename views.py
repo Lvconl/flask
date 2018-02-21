@@ -402,3 +402,30 @@ def comments(page = 1):
         comments = comments,
         pagination = pagination
     )
+
+@app.route('/search',methods = ['GET','POST'])
+def search():
+    user = checkUser()
+    form = SearchForm()
+    if request.method == 'GET':
+        return render_template(
+            'search.html',
+            user = user,
+            base64 = base64,
+            form = form
+        )
+    else:
+        text = form.searchText.data
+        searchText = '%' + text + '%'
+        blogsBaseName = Blogs.query.filter(Blogs.name.ilike(searchText)).all()
+        blogsBaseSummary = Blogs.query.filter(Blogs.summary.ilike(searchText)).all()
+        blogsBaseContent = Blogs.query.filter(Blogs.content.ilike(searchText)).all()
+        blogs = blogsBaseName + blogsBaseSummary + blogsBaseContent
+        return render_template(
+            'search.html',
+            user=user,
+            base64=base64,
+            form=form,
+            blogs = blogs,
+            text = text
+        )
