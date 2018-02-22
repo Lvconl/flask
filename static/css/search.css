@@ -1,16 +1,13 @@
-.search{
-    background-color: white;
-    border-radius: 10px;
-    margin-top: 20px;
-}
-form {
+.search form {
     position: relative;
     width: 500px;
-    margin: 0 auto;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
 }
 .search input {
     width: 100%;
-    height: 42px;
+    height: 38px;
     padding-left: 10px;
     border: 2px solid #0f88eb;
     border-radius: 5px;
@@ -20,7 +17,7 @@ form {
 .search button {
     position: absolute;
     top: 0;
-    right: 0px;
+    right: -15px;
     width: 60px;
     height: 42px;
     border: none;

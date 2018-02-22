@@ -2,6 +2,17 @@
 {% block title%}{{ user.name }}的文章{% endblock %}
 {% block beforehead %}
     <link rel="stylesheet" href="../static/css/person_blog.css">
+<script>
+    window.onload=function showtable(){
+        var tablename=document.getElementById("info");
+        var li=tablename.getElementsByTagName("tr");
+        for (var i=0;i<=li.length;i++) {
+            if (i % 2 == 0) {
+                li[i].style.backgroundColor = "#eac6cb";
+            }
+        }
+    }
+</script>
 {% endblock %}
 {% block content %}
     <div class="body">
@@ -28,15 +39,15 @@
                     <tbody>
                     {% for blog in blogs %}
                         <tr>
-                            <td style="width: 400px;">
-                                <a target="_blank" href="/blog/{{blog.id}}" style="margin-left: 165px;">{{ blog.name }}</a>
+                            <td>
+                                <a target="_blank" href="/blog/{{blog.id}}">{{ blog.name }}</a>
                             </td>
-                            <td style="margin-left: 250px; width: 200px;">
-                                <span style="margin-left: 170px;">{{ blog.created_at }}</span>
+                            <td>
+                                {{ blog.created_at }}
                             </td>
                             <td style="margin-left: 290px; width: 200px;">
-                                <a style="margin-left: 181px;" href="/blogs_edit/{{ blog.id }}"><img src="../static/img/edit.png" width="16" height="16"></a>
-                                <a style="margin-left: 10px;" href="/blogs/delete/{{ blog.id }}" onclick="delete_blog()"><img src="../static/img/delete.png" width="16" height="16"></a>
+                                <a href="/blogs_edit/{{ blog.id }}"><img src="../static/img/edit.png" width="16" height="16">编辑</a>
+                                <a href="/blogs/delete/{{ blog.id }}" id="delete"><img src="../static/img/delete.png" width="16" height="16">删除</a>
                             </td>
                         </tr>
                     {% endfor %}

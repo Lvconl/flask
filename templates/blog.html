@@ -3,6 +3,9 @@
 {% block beforehead %}
     <link rel="stylesheet" href="../static/css/comment.css">
     <script>
+    function refresh() {
+        window.location.reload();
+    }
     </script>
 {% endblock %}
 {% block content %}
@@ -74,6 +77,9 @@
                                 {% endif %}
                             </a>
                             {{ comment.user_name }} {% if comment.user_id == blog.user_id %}(本文作者){% endif %}发表于{{ comment.created_at }}:
+                            {% if user.admin == 1 or user.id == comment.user_id %}
+                            <a href="/comment/{{ comment.id }}" onclick="refresh()"><span style="float: right;margin-right: 20px;">删除该评论</span></a>
+                            {% endif %}
                         </header>
                     <div style="margin-left: 64px;font-size: 17px;">
                         <p>{{ comment.content }}</p>

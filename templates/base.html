@@ -38,11 +38,11 @@
         <div class="person-content" style="font-size: 19px;">
             {% if user.admin == 1 %}
             <p><a href="/blogs"><img src="../static/img/manage_blog.png" width="16" height="16">日志管理</a></p>
-                <p><a href="/comments"><img src="../static/img/comments.png" width="16" height="16">评论管理</a></p>
+                <p><a href="/users"><img src="../static/img/users.png" width="16" height="16">用户管理</a></p>
             <hr>
             {% endif %}
             <p><a href="/myblogs"><img src="../static/img/plus.png" width="16" height="16">我的日志</a></p>
-            <p><a href="/mycomments"><img src="../static/img/setting.png" width="16" height="16">我的评论</a></p>
+            <p><a href="/mycomments"><img src="../static/img/comments.png" width="16" height="16">我的评论</a></p>
             <p><a href="/updatepasswd"><img src="../static/img/updatepassword.png" width="16" height="16">修改密码</a></p>
             <p><a href="/user/{{ user.id }}"><img src="../static/img/info.png" height="16" width="16">个人主页</a>
             <p><a href="/signout"><img src="../static/img/exit.png" width="16" height="16">退出登录</a></p>

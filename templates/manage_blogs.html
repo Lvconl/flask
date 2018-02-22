@@ -1,45 +1,46 @@
 {% extends 'base.html' %}
 {% block title %}日志管理{% endblock %}
 {% block beforehead %}
+    <link rel="stylesheet" href="../static/css/manage_blogs.css">
+<script>
+    window.onload=function showtable(){
+        var tablename=document.getElementById("info");
+        var li=tablename.getElementsByTagName("tr");
+        for (var i=0;i<=li.length;i++) {
+            if (i % 2 == 0) {
+                li[i].style.backgroundColor = "#dcdcdc";
+            }
+        }
+    }
+</script>
 {% endblock %}
-<link rel="stylesheet" href="../static/css/manage_bogs.css">
-<script type="text/javascript" src="../static/js/delete.js"></script>
 {% block content %}
     <div style="background-color: white;border-radius: 10px;">
         <div style="margin-left: 20px;">
             <div>
-                <h2>日志管理</h2>
+                <h2 style="text-align: center;">日志管理</h2>
             </div>
         {% if blogs %}
-                <table style="margin-top: 20px;">
-                    <thead>
+                <table id="info">
+                <tbody>
+                <tr>
+                    <th>标题/摘要</th>
+                    <th>作者</th>
+                    <th>创建时间</th>
+                    <th>操作</th>
+                </tr>
+                {% for blog in blogs %}
                     <tr>
-                        <th>标题/摘要</th>
-                        <th style="margin-left: 300px;width: 350px;">作者</th>
-                        <th style="margin-left: 300px;width: 350px;">创作时间</th>
-                        <th style="margin-left: 300px;width: 350px;">操作</th>
+                        <td><a href="/blog/{{ blog.id }}">{{ blog.name }}</a></td>
+                        <td><a href="/user/{{ blog.user_id }}">{{ blog.user_name }}</a></td>
+                        <td>{{ blog.created_at }}</td>
+                        <td class="option">
+                            <a href="/blogs_edit/{{ blog.id }}"><img src="../static/img/edit.png" width="16" height="16">编辑</a>
+                            <a id="delete" href="/blogs/delete/{{ blog.id }}"><img src="../static/img/delete.png" width="16" height="16">删除</a>
+                        </td>
                     </tr>
-                    </thead>
-                    <hr style="margin-right: 20px;">
-                    <tbody>
-                    {% for blog in blogs %}
-                        <tr>
-                            <td style="width: 250px;">
-                                <a target="_blank" href="/blog/{{blog.id}}" style="margin-left: 92px;">{{ blog.name }}</a>
-                            </td>
-                            <td style="margin-left: 250px; width: 200px;">
-                                <a target="_blank" href="/blog/{{ blog.user_id }}" style="margin-left: 159px;">{{ blog.user_name }}</a>
-                            </td>
-                            <td style="margin-left: 250px; width: 200px;">
-                                <span style="margin-left: 144px;">{{ blog.created_at }}</span>
-                            </td>
-                            <td style="margin-left: 250px; width: 200px;">
-                                <a style="margin-left: 155px;" href="/blogs_edit/{{ blog.id }}"><img src="../static/img/edit.png" width="16" height="16"></a>
-                                <a style="margin-left: 10px;" href="/blogs/delete/{{ blog.id }}" onclick="delete_blog()"><img src="../static/img/delete.png" width="16" height="16"></a>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
+                {% endfor %}
+                </tbody>
                 </table>
         {% else %}
             <hr>

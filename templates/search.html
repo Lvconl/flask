@@ -5,22 +5,20 @@
 {% endblock %}
 {% block content %}
     <div class="search">
-        <div class="text">
+        <form action="/search" method="post">
             {{ form.hidden_tag() }}
-            <form method="post">
-                {{ form.searchText }}
-                <button type="submit">搜索</button>
-            </form>
-        </div>
+            {{ form.searchText }}
+            <button type="submit">搜索</button>
+        </form>
     </div>
     {% if blogs %}
     <div class="content">
         <article>
             <h3>以下是包含{{ text }}的搜索结果</h3>
             {% for blog in blogs %}
-            <div style="margin-left: 10px">
-                <h3><a href="/blog/{{blog.id}}" style="color: #0f88eb">{{blog.name}}</a></h3>
-                {{blog.summary}}
+            <div style="margin-left: 10px;">
+                <h3 style="background-color: antiquewhite;"><a href="/blog/{{blog.id}}" style="color: #0f88eb">{{blog.name}}</a></h3>
+                <span>{{blog.summary}}</span>
             </div>
             <hr>
             {% endfor %}

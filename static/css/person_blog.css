@@ -3,6 +3,27 @@
     background-color: white;
     margin-bottom: 10px;
 }
+table{
+    margin: auto;
+}
+th{
+    background-color: #0f88eb;
+    color: white;
+}
+tr td{
+    width: 300px;
+    text-align: center;
+}
+tr:hover{
+    background-color: #dcdcdc;
+}
+#delete{
+    margin-left: 20px;
+}
+#delete:hover{
+    font-size: 20px;
+    color: red;
+}
 .page ul li{
     display: inline;
     font-size: 15px;

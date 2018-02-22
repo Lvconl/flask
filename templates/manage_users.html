@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block title%}{% endblock %}
+{% block beforehead %}
+    <link rel="stylesheet" href="../static/css/manage_users.css">
+    <script>
+    window.onload=function showtable(){
+        var tablename=document.getElementById("info");
+        var li=tablename.getElementsByTagName("tr");
+        for (var i=0;i<=li.length;i++) {
+            if (i % 2 == 0) {
+                li[i].style.backgroundColor = "#dcdcdc";
+            }
+        }
+    }
+    </script>
+{% endblock %}
+{% block content%}
+<div class="body">
+    <article>
+        <h3 style="text-align: center;">用户管理</h3>
+    </article>
+    {% if manaUser %}
+    <div>
+        <table id="info">
+            <tbody>
+            <tr>
+                <th>用户名</th>
+                <th>邮箱</th>
+                <th>注册时间</th>
+                <th>操作</th>
+            </tr>
+            {% for u in manaUser %}
+            <tr>
+                <td>{{ u.name }}</td>
+                <td>{{ u.email }}</td>
+                <td>{{ u.created_at }}</td>
+                <td>
+                    <a href="/updateToAdmin/{{ u.id }}">设为管理员</a>
+                    <a href="/delete/user/{{ u.id }}" id="delete">删除</a>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    <div class="page">
+    <ul style="list-style-type: none;">
+        {% if pagination.has_prev %}
+             <li>
+                  <a href="{{ url_for('.manage_users',page = pagination.page - 1) }}"><< 上一页</a>
+             </li>
+        {% endif %}
+        {% if pagination.has_next %}
+            <li>
+                <a href="{{ url_for('.manage_users',page = pagination.page + 1) }}">下一页 >></a>
+            </li>
+        {% endif %}
+    </ul>
+    </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

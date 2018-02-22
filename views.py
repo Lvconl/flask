@@ -209,7 +209,7 @@ def manage_blogs():
     if user == '' or user.admin == 0:
         return redirect('/')
     page = request.args.get('page', 1, type=int)
-    pagination = Blogs.query.order_by(Blogs.created_at.desc()).paginate(page, per_page=5, error_out=False)
+    pagination = Blogs.query.order_by(Blogs.created_at.desc()).paginate(page, per_page=7, error_out=False)
     blogs = pagination.items
     return render_template(
         'manage_blogs.html',
@@ -224,9 +224,10 @@ def blog_delete(id):
     user = checkUser()
     if user == '':
         return redirect('/')
-    comment = Comments.query.filter_by(blog_id = id).all()
+    comments = Comments.query.filter_by(blog_id = id).all()
     blog = Blogs.query.filter_by(id = id).all()[0]
-    db.session.delete(comment)
+    for comment in comments:
+        db.session.delete(comment)
     db.session.delete(blog)
     db.session.commit()
     if user.admin == 1:
@@ -377,37 +378,25 @@ def mycomments(page = 1):
         pagination = pagination
     )
 
-@app.route('/comment/<id>')
+@app.route('/comment/<id>',methods = ['GET','POST'])
 def delete_comment(id):
     user = checkUser()
     if user == '':
         return redirect('/')
     comment = Comments.query.filter_by(id = id).all()[0]
+    blod_id = comment.blog_id
     db.session.delete(comment)
     db.session.commit()
-    return redirect('/mycomments')
-
-@app.route('/comments')
-def comments(page = 1):
-    user = checkUser()
-    if user == '' or user.admin == 0:
-        return redirect('/')
-    page = request.args.get('page',1,type = int)
-    pagination = Comments.query.order_by(Comments.created_at.desc()).paginate(page,per_page = 6,error_out = False)
-    comments = pagination.items
-    return render_template(
-        'manage_comments.html',
-        user = user,
-        base64 = base64,
-        comments = comments,
-        pagination = pagination
-    )
+    if request.method == 'POST':
+        return redirect('/mycomments')
+    else:
+        return redirect('/blog/'+blod_id)
 
 @app.route('/search',methods = ['GET','POST'])
 def search():
     user = checkUser()
     form = SearchForm()
-    if request.method == 'GET':
+    if request.method == 'GET' or form.searchText.data is '':
         return render_template(
             'search.html',
             user = user,
@@ -419,8 +408,7 @@ def search():
         searchText = '%' + text + '%'
         blogsBaseName = Blogs.query.filter(Blogs.name.ilike(searchText)).all()
         blogsBaseSummary = Blogs.query.filter(Blogs.summary.ilike(searchText)).all()
-        blogsBaseContent = Blogs.query.filter(Blogs.content.ilike(searchText)).all()
-        blogs = blogsBaseName + blogsBaseSummary + blogsBaseContent
+        blogs = blogsBaseName + blogsBaseSummary
         return render_template(
             'search.html',
             user=user,
@@ -429,3 +417,45 @@ def search():
             blogs = blogs,
             text = text
         )
+
+@app.route('/users')
+def manage_users(page = 1):
+    user = checkUser()
+    if user is '' or user.admin == 0:
+        return redirect('/')
+    page = request.args.get('page',1,type = int)
+    pagination = Users.query.filter_by(admin = 0).paginate(page,per_page = 6,error_out = False)
+    manaUser = pagination.items
+    return render_template(
+        'manage_users.html',
+        user = user,
+        manaUser = manaUser,
+        base64 = base64,
+        pagination = pagination
+    )
+
+@app.route('/delete/user/<id>')
+def delete_user(id):
+    user = checkUser()
+    if user.admin == 0:
+        return redirect('/')
+    u = Users.query.filter_by(id = id).all()[0]
+    blogs = Blogs.query.filter_by(user_id = u.id).all()
+    comments = Comments.query.filter_by(user_id = u.id).all()
+    for blog in  blogs:
+        db.session.delete(blog)
+    for comment in comments:
+        db.session.delete(comment)
+    db.session.delete(u)
+    db.session.commit()
+    return redirect('/users')
+
+@app.route('/updateToAdmin/<user_id>')
+def updateToAdmin(user_id):
+    user = checkUser()
+    if user is '' or user.admin == 0:
+        return redirect('/')
+    Users.query.filter_by(id = user_id).update({'admin':1})
+    db.session.commit()
+    r = make_response('''<script>alert('设置成功!');location.href = '/users';</script>''')
+    return r

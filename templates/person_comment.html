@@ -2,22 +2,29 @@
 {% block title %}{{ user.name }}的评论{% endblock %}
 {% block  beforehead %}
     <link rel="stylesheet" href="../static/css/person_comment.css">
+    <script>
+    function refresh() {
+        window.location.reload();
+    }
+    </script>
 {% endblock %}
 {% block content %}
 <div class="body">
     <header>
-        <h2>评论管理</h2>
+        <h3 style="text-align: center">评论管理</h3>
     </header>
     {% if comments %}
         <article>
         {% for comment in comments %}
-            <label>评论内容：</label>
+            <label style="margin-left: 8px;">评论内容：</label>
             <span>{{ comment.content }}</span>
             <span style="float: right;">发表于：{{ comment.created_at }}</span>
             <br>
-            <label>评论文章：</label>
+            <label style="margin-left: 8px;">评论文章：</label>
             <a href="/blog/{{ comment.blog_id }}"><span>{{ comment.blog_name }}</span></a>
-            <a href="/comment/{{ comment.id }}"><span style="float: right;">删除评论</span></a>
+            <form action="/comment/{{ comment.id }}" method="post">
+            <button type="submit" style="color: #0f88eb">删除评论</button>
+            </form>
             <hr>
         {% endfor %}
         <div class="page">
