@@ -184,7 +184,7 @@ def register():
 @app.route('/blogs/create',methods = ['GET','POST'])
 def blog_create():
     user = checkUser()
-    if user == '':
+    if user is None:
         return redirect('/')
     form = BlogTextForm()
     if request.method == 'GET':
@@ -198,7 +198,8 @@ def blog_create():
         name = form.name.data
         summary = form.summary.data
         content = form.content.data
-        blog = Blogs(id = str(uuid1()),user_id = user.id,user_name = user.name,name = name,summary = summary,content = content)
+        tag = form.tag.data
+        blog = Blogs(id = str(uuid1()),user_id = user.id,user_name = user.name,name = name,summary = summary,content = content,tag = tag)
         db.session.add(blog)
         db.session.commit()
         return redirect('/myblogs')
@@ -219,21 +220,19 @@ def manage_blogs():
         pagination = pagination
     )
 
-@app.route('/blogs/delete/<id>')
-def blog_delete(id):
+@app.route('/blogs/delete')
+def blog_delete():
     user = checkUser()
     if user == '':
         return redirect('/')
+    id = request.args.get("id")
     comments = Comments.query.filter_by(blog_id = id).all()
     blog = Blogs.query.filter_by(id = id).all()[0]
     for comment in comments:
         db.session.delete(comment)
     db.session.delete(blog)
     db.session.commit()
-    if user.admin == 1:
-        return redirect('/blogs')
-    else:
-        return redirect('/myblogs')
+    return u'删除成功！'
 
 @app.route('/blogs_edit/<id>',methods = ['GET','POST'])
 def blog_edit(id):
@@ -453,9 +452,55 @@ def delete_user(id):
 @app.route('/updateToAdmin/<user_id>')
 def updateToAdmin(user_id):
     user = checkUser()
-    if user is '' or user.admin == 0:
+    if user is None or user.admin == 0:
         return redirect('/')
     Users.query.filter_by(id = user_id).update({'admin':1})
     db.session.commit()
     r = make_response('''<script>alert('设置成功!');location.href = '/users';</script>''')
     return r
+
+@app.route('/tag/movie')
+def movie(page = 1):
+    user = checkUser()
+    page = request.args.get('page', 1, type=int)
+    pagination = Blogs.query.filter_by(tag = 'movie').order_by(Blogs.created_at.desc()).paginate(page, per_page=POSTS_PER_PAGE, error_out=False)
+    blogs = pagination.items
+    return render_template(
+        "index.html",
+        blogs=blogs,
+        user=user,
+        base64=base64,
+        pagination=pagination
+    )
+
+@app.route('/tag/technology')
+def technology(page = 1):
+    user = checkUser()
+    page = request.args.get('page', 1, type=int)
+    pagination = Blogs.query.filter_by(tag = 'technology').order_by(Blogs.created_at.desc()).paginate(page,
+                                                                                               per_page=POSTS_PER_PAGE,
+                                                                                               error_out=False)
+    blogs = pagination.items
+    return render_template(
+        "index.html",
+        blogs=blogs,
+        user=user,
+        base64=base64,
+        pagination=pagination
+    )
+
+@app.route('/tag/diary')
+def diary(page = 1):
+    user = checkUser()
+    page = request.args.get('page', 1, type=int)
+    pagination = Blogs.query.filter_by(tag = 'diary').order_by(Blogs.created_at.desc()).paginate(page,
+                                                                                                    per_page=POSTS_PER_PAGE,
+                                                                                                    error_out=False)
+    blogs = pagination.items
+    return render_template(
+        "index.html",
+        blogs=blogs,
+        user=user,
+        base64=base64,
+        pagination=pagination
+    )

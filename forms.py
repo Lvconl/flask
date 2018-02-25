@@ -5,7 +5,7 @@
 # @Date  : 18-2-11
 #@Software : PyCharm
 from flask_wtf import FlaskForm
-from wtforms import StringField,PasswordField,BooleanField,TextAreaField,FileField
+from wtforms import StringField,PasswordField,BooleanField,TextAreaField,FileField,RadioField
 from wtforms.validators import DataRequired
 
 class LoginForm(FlaskForm):
@@ -23,6 +23,7 @@ class BlogTextForm(FlaskForm):
     name = StringField('name',render_kw = {'plceholder':'文章标题'})
     summary = TextAreaField('summary',render_kw = {'placeHolder':'文章摘要'})
     content = TextAreaField('content',render_kw = {'placeholder':'文章内容'})
+    tag = RadioField('tag',choices = [('movie',u'电影'),('technology',u'技术'),('diary',u'日记')])
 
 class UserInfoForm(FlaskForm):
     name = StringField('name',render_kw = {'placeholder':'用户名'})

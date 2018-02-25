@@ -2,21 +2,27 @@
 {% block title %}首页{% endblock %}
 {% block beforehead %}
     <link rel="stylesheet" href="../static/css/index.css">
-<script>
-</script>
 {% endblock %}
 {% block content %}
-    <div>
+    <div class="blog">
     {% for blog in blogs %}
     <article>
     <div style="margin-left: 20px;">
         <h2><a href="/blog/{{blog.id}}" style="color: #0f88eb">{{blog.name}}</a></h2>
-        <p style="font-size: 12px; font-family: 'Microsoft Yahei';color: #737373">发表于{{blog.created_at}}</p>
+        <p style="font-size: 12px; font-family: 'Ubuntu', 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva', 'Verdana', sans-serif;color: #737373;">发表于{{blog.created_at}}</p>
         <p>{{blog.summary}}</p>
         <p><a href="/blog/{{blog.id}}" style="color: #0f88eb">继续阅读>></a></p>
     </div>
     </article>
     {% endfor %}
+    </div>
+    <div class="tag">
+        <ul>
+            <li><a href="/tag/movie">电影</a></li>
+            <li><a href="/tag/technology">技术</a></li>
+            <li><a href="/tag/diary">日记</a></li>
+        </ul>
+    </div>
     <div class="page">
     <ul>
         {% if pagination.has_prev %}
@@ -35,6 +41,5 @@
     </li>
     <li>共{{ pagination.pages }}页</li>
     </ul>
-    </div>
     </div>
 {% endblock %}

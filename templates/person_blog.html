@@ -12,6 +12,22 @@
             }
         }
     }
+    $("document").ready(function () {
+        $(".btn_delete").click(function () {
+            var flag = confirm('确认删除'+$(this).attr("name")+'?');
+            if(!flag){
+                return;
+            }
+            $.ajax({
+                url:"/blogs/delete",
+                data:{"id":$(this).attr("para")},
+                success:function (data) {
+                    alert(data);
+                    location.reload();
+                }
+            })
+        });
+    });
 </script>
 {% endblock %}
 {% block content %}
@@ -31,6 +47,7 @@
                     <thead>
                     <tr>
                         <th>标题/摘要</th>
+                        <th>类型</th>
                         <th style="margin-left: 300px;width: 400px;">创作时间</th>
                         <th style="margin-left: 300px;width: 400px;">操作</th>
                     </tr>
@@ -43,11 +60,14 @@
                                 <a target="_blank" href="/blog/{{blog.id}}">{{ blog.name }}</a>
                             </td>
                             <td>
+                                {% if blog.tag == 'movie' %}电影{% elif blog.tag == 'diary' %}日记{% else %}技术{% endif %}
+                            </td>
+                            <td>
                                 {{ blog.created_at }}
                             </td>
                             <td style="margin-left: 290px; width: 200px;">
                                 <a href="/blogs_edit/{{ blog.id }}"><img src="../static/img/edit.png" width="16" height="16">编辑</a>
-                                <a href="/blogs/delete/{{ blog.id }}" id="delete"><img src="../static/img/delete.png" width="16" height="16">删除</a>
+                                <a class="btn_delete" para="{{ blog.id }}" name="{{ blog.name }}"><img src="../static/img/delete.png" width="16" height="16">删除</a>
                             </td>
                         </tr>
                     {% endfor %}

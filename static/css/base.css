@@ -52,6 +52,7 @@ a:hover{
     margin-left: 200px;
     position: relative;
     display: inline-block;
+    z-index: 1;
 }
 .person-content {
     display: none;
