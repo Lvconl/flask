@@ -220,20 +220,6 @@ def manage_blogs():
         pagination = pagination
     )
 
-@app.route('/blogs/delete')
-def blog_delete():
-    user = checkUser()
-    if user == '':
-        return redirect('/')
-    id = request.args.get("id")
-    comments = Comments.query.filter_by(blog_id = id).all()
-    blog = Blogs.query.filter_by(id = id).all()[0]
-    for comment in comments:
-        db.session.delete(comment)
-    db.session.delete(blog)
-    db.session.commit()
-    return u'删除成功！'
-
 @app.route('/blogs_edit/<id>',methods = ['GET','POST'])
 def blog_edit(id):
     user = checkUser()
