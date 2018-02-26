@@ -3,9 +3,25 @@
 {% block beforehead %}
     <link rel="stylesheet" href="../static/css/comment.css">
     <script>
-    function refresh() {
-        window.location.reload();
-    }
+    $(document).ready(function () {
+        $(".btn_delete_comment").click(function () {
+            var id = $(this).attr("id");
+            var flag = confirm("确认删除该评论?");
+            if (!flag){
+                return ;
+            }
+            $.ajax({
+                url:"/comment/delete",
+                data:{
+                    "id":id
+                },
+                success:function (data) {
+                    alert(data);
+                    $("#"+id).fadeOut("fast");
+                }
+            });
+        });
+    });
     </script>
 {% endblock %}
 {% block content %}
@@ -67,7 +83,7 @@
          {% endif %}
             <h3>最新评论</h3>
                 {% for comment in comments %}
-                    <article>
+                    <article id="{{ comment.id }}">
                         <header>
                             <a href="/user/{{ comment.user_id }}">
                                 {% if comment.user_image %}
@@ -78,7 +94,7 @@
                             </a>
                             {{ comment.user_name }} {% if comment.user_id == blog.user_id %}(本文作者){% endif %}发表于{{ comment.created_at }}:
                             {% if user.admin == 1 or user.id == comment.user_id %}
-                            <a href="/comment/{{ comment.id }}" onclick="refresh()"><span style="float: right;margin-right: 20px;">删除该评论</span></a>
+                                <button class="btn_delete_comment" id="{{ comment.id }}">删除该评论</button>
                             {% endif %}
                         </header>
                     <div style="margin-left: 64px;font-size: 17px;">

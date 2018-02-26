@@ -14,16 +14,17 @@
     };
     $("document").ready(function () {
         $(".btn_delete").click(function () {
+            var id = $(this).attr("para");
             var flag = confirm('确认删除'+$(this).attr("name")+'?');
             if(!flag){
                 return;
             }
             $.ajax({
                 url:"/blogs/delete",
-                data:{"id":$(this).attr("para")},
+                data:{"id":id},
                 success:function (data) {
                     alert(data);
-                    location.reload();
+                    $("#" + id).fadeOut("fast");
                 }
             })
         });
@@ -46,7 +47,7 @@
                     <th>操作</th>
                 </tr>
                 {% for blog in blogs %}
-                    <tr>
+                    <tr id="{{ blog.id }}">
                         <td><a href="/blog/{{ blog.id }}">{{ blog.name }}</a></td>
                         <td><a href="/user/{{ blog.user_id }}">{{ blog.user_name }}</a></td>
                         <td>{{ blog.created_at }}</td>

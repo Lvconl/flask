@@ -231,6 +231,7 @@ def blog_edit(id):
         form.name.data = blog.name
         form.summary.data = blog.summary
         form.content.data = blog.content
+        form.tag.data = blog.tag
         return render_template(
             'blog_edit.html',
             form = form,
@@ -240,7 +241,8 @@ def blog_edit(id):
         name = form.name.data
         summary = form.summary.data
         content = form.content.data
-        Blogs.query.filter_by(id = id).update({'name':name,'summary':summary,'content':content})
+        tag = form.tag.data
+        Blogs.query.filter_by(id = id).update({'name':name,'summary':summary,'content':content,'tag':tag})
         db.session.commit()
         return redirect('/')
 

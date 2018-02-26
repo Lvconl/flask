@@ -5,3 +5,13 @@
     font-size: 16px;
     resize: none;
 }
+.btn_delete_comment{
+    float: right;
+    margin-right: 20px;
+    background-color: #0f88eb;
+    color: white;
+    border-radius: 2px;
+}
+.btn_delete_comment:hover{
+    background-color: red;
+}
