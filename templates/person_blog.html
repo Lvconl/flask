@@ -14,16 +14,19 @@
     }
     $("document").ready(function () {
         $(".btn_delete").click(function () {
+            var id = $(this).attr("para");
             var flag = confirm('确认删除'+$(this).attr("name")+'?');
             if(!flag){
                 return;
             }
             $.ajax({
                 url:"/blogs/delete",
-                data:{"id":$(this).attr("para")},
+                data:{
+                    "id" : id
+                },
                 success:function (data) {
                     alert(data);
-                    location.reload();
+                    $("#" + id).fadeOut(200);
                 }
             })
         });
@@ -55,7 +58,7 @@
                     <hr style="margin-right: 20px;">
                     <tbody>
                     {% for blog in blogs %}
-                        <tr>
+                        <tr id="{{ blog.id }}">
                             <td>
                                 <a target="_blank" href="/blog/{{blog.id}}">{{ blog.name }}</a>
                             </td>

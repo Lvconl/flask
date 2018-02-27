@@ -25,17 +25,21 @@
             <tbody>
             <tr>
                 <th>用户名</th>
+                <th>生日</th>
                 <th>邮箱</th>
                 <th>注册时间</th>
+                <th>管理员</th>
                 <th>操作</th>
             </tr>
             {% for u in manaUser %}
             <tr>
                 <td>{{ u.name }}</td>
+                <td>{% if u.birth %}{{ u.birth }}{% else %}暂无数据{% endif %}</td>
                 <td>{{ u.email }}</td>
                 <td>{{ u.created_at }}</td>
+                <td>{% if u.admin == 1 %}是{% else %}否{% endif %}</td>
                 <td>
-                    <a href="/updateToAdmin/{{ u.id }}">设为管理员</a>
+                    {% if u.admin == 0 %}<a href="/updateToAdmin/{{ u.id }}">设为管理员</a>{% endif %}
                     <a href="/delete/user/{{ u.id }}" id="delete">删除</a>
                 </td>
             </tr>

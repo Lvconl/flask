@@ -411,7 +411,7 @@ def manage_users(page = 1):
     if user is '' or user.admin == 0:
         return redirect('/')
     page = request.args.get('page',1,type = int)
-    pagination = Users.query.filter_by(admin = 0).paginate(page,per_page = 6,error_out = False)
+    pagination = Users.query.paginate(page,per_page = 6,error_out = False)
     manaUser = pagination.items
     return render_template(
         'manage_users.html',

@@ -20,6 +20,7 @@ class Users(db.Model):
     passwd = db.Column(db.String(255))
     admin = db.Column(db.Boolean(),default = False)
     name = db.Column(db.String(255))
+    birth = db.Column(db.Date())
     image = db.Column(db.BLOB())
     created_at = db.Column(db.DateTime())
 
@@ -28,11 +29,12 @@ class Users(db.Model):
         self.email = email
         self.passwd = passwd
         self.name = name
+        self.birth = datetime.date.today()
         self.created_at = datetime.datetime.now()
 
     def __repr__(self):
-        return "[User] id:`{}`,admin:`{}`,email:`{}`,passwd:`{}`,name:`{}`,image:`{}`,created_at:`{}`".format(
-            self.id,self.admin,self.email,self.passwd,self.name,self.image,self.created_at
+        return "[User] id:`{}`,admin:`{}`,email:`{}`,passwd:`{}`,name:`{}`,birth:`{}`,image:`{}`,created_at:`{}`".format(
+            self.id,self.admin,self.email,self.passwd,self.name,self.birth,self.image,self.created_at
         )
 
 class Blogs(db.Model):

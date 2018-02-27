@@ -2,10 +2,19 @@
 {% block title %}{{ user.name }}-个人信息{% endblock %}
 {% block beforehead %}
     <script>
-    function change() {
-        var btn_submit = document.getElementById("update");
-        btn_submit.disabled = false;
-    }
+    $(document).ready(function () {
+        $("#update").click(function () {
+            $.ajax({
+                url:"/ajax/user/edit",
+                data:{
+                    "birth" : $("#test1").val()
+                },
+                success:function (data) {
+                    alert(data);
+                }
+            });
+        });
+    });
     </script>
 {% endblock %}
 {% block content %}
@@ -22,7 +31,7 @@
             </div>
             <label>用户名:</label>
             <div>
-                {{ form.name(value = user.name,onchange = "change()") }}
+                {{ form.name(value = user.name) }}
             </div>
             <label>个人头像:</label>
             <div>
@@ -31,10 +40,22 @@
                 {% else %}
                 <img src="../static/img/boy.png" width="80" height="80">
                 {% endif %}
-                {{ form.image(onchange = "change()") }}
+                {{ form.image() }}
+            </div>
+            <label>生日:</label>
+            <div>
+                <input type="text" class="demo-input" placeholder="请选择日期" id="test1">
+                <script src="../static/js/laydate.js"></script> <!-- 改成你的路径 -->
+                <script>
+                    lay('#version').html('-v'+ laydate.v);
+                    //执行一个laydate实例
+                    laydate.render({
+                    elem: '#test1' //指定元素
+                    });
+                </script>
             </div>
             <div>
-                <button type="submit" style="border-radius: 5px; border: none;background-color: #0f88eb;color: white;font-size: 16px;margin-top: 10px;margin-bottom: 10px;" disabled="disabled" id="update">确认修改</button>
+                <button type="submit" style="border-radius: 5px; border: none;background-color: #0f88eb;color: white;font-size: 16px;margin-top: 10px;margin-bottom: 10px;"  id="update">确认修改</button>
                 <a href="/" style="margin-left: 10px;font-size: 16px;">取消</a>
             </div>
         </form>

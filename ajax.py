@@ -5,11 +5,27 @@
 # @Date  : 18-2-25
 #@Software : PyCharm
 
-from flask import request
+from flask import request,session
 from flask import Blueprint
 from models import db,Users,Blogs,Comments
 
 ajax = Blueprint('ajax',__name__)
+
+COOKIE_NAME = 'lvconl'
+
+def checkUser():
+    id = ''
+    user = ''
+    if 'id' in session:
+        id = session['id']
+    if id == '':
+        id = request.cookies.get(COOKIE_NAME)
+    users = Users.query.filter_by(id=id).all()
+    if len(users) == 0:
+        user = ''
+    else:
+        user = users[0]
+    return user
 
 @ajax.route('/blogs/delete')
 def blog_delete():
@@ -29,3 +45,11 @@ def comment_delete():
     db.session.delete(comment)
     db.session.commit()
     return u'删除成功!'
+
+@ajax.route('/ajax/user/edit')
+def user_edit():
+    birth = request.args.get('birth')
+    user = checkUser()
+    Users.query.filter_by(id = user.id).update({'birth':birth})
+    db.session.commit()
+    return  u'修改成功！'
