@@ -42,3 +42,7 @@
 .tag a{
     color: #000000;
 }
+.weather{
+    float: left;
+    background-color: white;
+}
