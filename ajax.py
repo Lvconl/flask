@@ -49,7 +49,8 @@ def comment_delete():
 @ajax.route('/ajax/user/edit')
 def user_edit():
     birth = request.args.get('birth')
+    name = request.args.get('name')
     user = checkUser()
-    Users.query.filter_by(id = user.id).update({'birth':birth})
+    Users.query.filter_by(id = user.id).update({'name':name,'birth':birth})
     db.session.commit()
     return  u'修改成功！'

@@ -246,7 +246,7 @@ def blog_edit(id):
         db.session.commit()
         return redirect('/')
 
-@app.route('/user/edit',methods = ['GET','POST'])
+@app.route('/user/editImage',methods = ['GET','POST'])
 def user_edit():
     user = checkUser()
     if user == '':
@@ -259,13 +259,9 @@ def user_edit():
             user = user,
             base64 = base64
         )
-    if request.method == 'POST':
-        name = form.name.data
-        image = request.files['image'].read()
-        Users.query.filter_by(id = user.id).update({'name':name,'image':image})
-        Blogs.query.filter_by(user_id = user.id).update({'user_name':name,'user_image':image})
-        Comments.query.filter_by(user_id = user.id).update({'user_name':name,'user_image':image})
-        db.session.commit()
+    if form.validate_on_submit():
+        image = form.image.read()
+        Users.query.filter_by(id = user.id).update({'image':image})
         return redirect('/')
 
 @app.route('/user/<id>')
@@ -274,13 +270,15 @@ def user(id):
     user_info = Users.query.filter_by(id = id).all()[0]
     user_blog = Blogs.query.filter_by(user_id = id).order_by(Blogs.created_at.desc()).limit(3).all()
     user_comment = Comments.query.filter_by(user_id = id).order_by(Comments.created_at.desc()).limit(3).all()
+    form = UserInfoForm()
     return render_template(
         'user_index.html',
         user = user,
         user_info = user_info,
         user_blog = user_blog,
         user_comment = user_comment,
-        base64 = base64
+        base64 = base64,
+        form = form
     )
 
 @app.route('/updatepasswd',methods = ['GET','POST'])

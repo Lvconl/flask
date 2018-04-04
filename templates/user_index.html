@@ -7,10 +7,21 @@
     <div class="main">
     <article style="margin-left: 30px;">
         <div class="userInfo">
+        <form action="/user/editImage" method="post">
         {% if user_info.image %}
+            <div>
             <img src="data:;base64,{{ base64.b64encode(user_info.image).decode('utf-8') }}" width="150" height="150" id="userInfoImage">
+            {{ form.image}}
+            </div>
             {% else %}
+            <div>
             <img src="../static/img/register-logo.png" width="150" height="150" style="border-radius: 50%;">
+            {{ form.image }}
+            </div>
+            <div>
+                <button type="submit" style="border-radius: 5px; border: none;background-color: #0f88eb;color: white;font-size: 16px;margin-top: 10px;margin-bottom: 10px;"  id="update">确认修改</button>
+            </div>
+        </form>
         {% endif %}
             <span>用户名:{{ user_info.name }}</span>
             <span>邮箱账号:{{ user_info.email }}</span>

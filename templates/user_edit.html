@@ -7,7 +7,8 @@
             $.ajax({
                 url:"/ajax/user/edit",
                 data:{
-                    "birth" : $("#test1").val()
+                    "birth" : $("#test1").val(),
+                    "name" : $("#userName").val()
                 },
                 success:function (data) {
                     alert(data);
@@ -31,20 +32,11 @@
             </div>
             <label>用户名:</label>
             <div>
-                {{ form.name(value = user.name) }}
-            </div>
-            <label>个人头像:</label>
-            <div>
-                {% if user.image %}
-                <img src="data:;base64,{{ base64.b64encode(user.image).decode('utf-8') }}" width="100" height="100"><p>
-                {% else %}
-                <img src="../static/img/boy.png" width="80" height="80">
-                {% endif %}
-                {{ form.image() }}
+                {{ form.name(value = user.name,id = "userName") }}
             </div>
             <label>生日:</label>
             <div>
-                <input type="text" class="demo-input" placeholder="请选择日期" id="test1">
+                <input type="text" class="demo-input" placeholder="请选择日期" id="test1" value="{{ user.birth }}">
                 <script src="../static/js/laydate.js"></script> <!-- 改成你的路径 -->
                 <script>
                     lay('#version').html('-v'+ laydate.v);

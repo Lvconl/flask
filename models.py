@@ -21,7 +21,7 @@ class Users(db.Model):
     admin = db.Column(db.Boolean(),default = False)
     name = db.Column(db.String(255))
     birth = db.Column(db.Date())
-    image = db.Column(db.BLOB())
+    image = db.Column(db.LargeBinary(length = 2048))
     created_at = db.Column(db.DateTime())
 
     def __init__(self,id,email,passwd,name):
@@ -41,7 +41,7 @@ class Blogs(db.Model):
     id = db.Column(db.String(255),primary_key = True)
     user_id = db.Column(db.String(255))
     user_name = db.Column(db.String(255))
-    user_image = db.Column(db.BLOB())
+    user_image = db.Column(db.LargeBinary(length = 2048))
     name = db.Column(db.String(255))
     summary = db.Column(db.Text())
     content = db.Column(db.Text())
@@ -69,7 +69,7 @@ class Comments(db.Model):
     blog_name = db.Column(db.String(255))
     user_id = db.Column(db.String(255))
     user_name = db.Column(db.String(255))
-    user_image = db.Column(db.BLOB())
+    user_image = db.Column(db.LargeBinary(length = 2048))
     content = db.Column(db.Text())
     created_at = db.Column(db.DateTime())
 
