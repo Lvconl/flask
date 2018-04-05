@@ -21,6 +21,34 @@
                 }
             });
         });
+        $(".btn_like_comment").click(function () {
+            var id = $(this).attr("id");
+            $.ajax({
+                url:"/ajax/comment/like",
+                data:{
+                    "id":id
+                },
+                success:function (data) {
+                    alert(data);
+                    $("#unlike" + id).hide();
+                    $("#like" + id).show();
+                }
+            });
+        });
+        $(".btn_unlike_comment").click(function () {
+            var id = $(this).attr("id");
+            $.ajax({
+                url:"/ajax/comment/unlike",
+                data:{
+                    "id":id
+                },
+                success:function (data) {
+                    alert(data);
+                    $("#unlike" + id).show();
+                    $("#like" + id).hide();
+                }
+            });
+        });
     });
     </script>
 {% endblock %}
@@ -95,6 +123,20 @@
                             {{ comment.user_name }} {% if comment.user_id == blog.user_id %}(本文作者){% endif %}发表于{{ comment.created_at }}:
                             {% if user.admin == 1 or user.id == comment.user_id %}
                                 <button class="btn_delete_comment" id="{{ comment.id }}">删除该评论</button>
+                            {% else %}
+                                {% if comment.canLike %}
+                                    <button class="btn_unlike_comment" id="{{ comment.id }}">
+                                        <span id="like{{ comment.id }}"><img src="../static/img/like.png" width="25" height="25"></span>
+                                        <span id="unlike{{ comment.id }}" style="display: none;"><img src="../static/img/unlike.png" width="25" height="25" ></span>
+                                        {{ comment.likeCount }}
+                                    </button>
+                                {% else %}
+                                    <button class="btn_like_comment" id="{{ comment.id }}">
+                                        <span id="unlike{{ comment.id }}"><img src="../static/img/unlike.png" width="25" height="25"></span>
+                                        <span id="like{{ comment.id }}" style="display: none;"><img src="../static/img/like.png" width="25" height="25"></span>
+                                        {{ comment.likeCount }}
+                                    </button>
+                                {% endif %}
                             {% endif %}
                         </header>
                     <div style="margin-left: 64px;font-size: 17px;">

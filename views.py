@@ -6,8 +6,9 @@
 #@Software : PyCharm
 from flask import render_template,make_response,request,redirect,session
 
+from sqlalchemy import and_
 from main import app
-from models import db,Users,Blogs,Comments
+from models import db,Users,Blogs,Comments,Likes
 from forms import LoginForm,RegisterForm,BlogTextForm,UserInfoForm,CommentForm,UpdatePasswdForm,SearchForm
 from uuid import uuid1
 from config import POSTS_PER_PAGE
@@ -60,7 +61,15 @@ def read_blog(id):
         blog = ''
     else:
         blog = blogs[0]
-    comments = Comments.query.filter_by(blog_id= id).order_by(Comments.created_at.desc()).all()
+    commentResult = Comments.query.filter_by(blog_id= id).order_by(Comments.created_at.desc()).all()
+    comments = []
+    for c in commentResult:
+        like = Likes.query.filter(and_(Likes.user_id.like(user.id),Likes.comment_id.like(c.id))).all()
+        if len(like):
+            c.canLike = True
+        else:
+            c.canLike = False
+        comments.append(c)
     blog.htmlcontent = markdown2.markdown(blog.content)
     form = CommentForm()
     if request.method == 'GET':
@@ -266,6 +275,8 @@ def user_editImage():
     if request.method == 'POST':
         image = request.files['image'].read()
         Users.query.filter_by(id = user.id).update({'image':image})
+        Comments.query.filter_by(user_id = user.id).update({'user_image':image})
+        Blogs.query.filter_by(user_id = user.id).update({'user_image':image})
         db.session.commit()
         return redirect('/')
 
@@ -273,8 +284,8 @@ def user_editImage():
 def user(id):
     user = checkUser()
     user_info = Users.query.filter_by(id = id).all()[0]
-    user_blog = Blogs.query.filter_by(user_id = id).order_by(Blogs.created_at.desc()).limit(3).all()
-    user_comment = Comments.query.filter_by(user_id = id).order_by(Comments.created_at.desc()).limit(3).all()
+    user_blog = Blogs.query.filter_by(user_id = id).order_by(Blogs.created_at.desc()).limit(2).all()
+    user_comment = Comments.query.filter_by(user_id = id).order_by(Comments.created_at.desc()).limit(2).all()
     form = UserInfoForm()
     return render_template(
         'user_index.html',

@@ -15,3 +15,11 @@
 .btn_delete_comment:hover{
     background-color: red;
 }
+.btn_like_comment{
+    float: right;
+    margin-right: 4%;
+}
+.btn_unlike_comment{
+    float: right;
+    margin-right: 4%;
+}

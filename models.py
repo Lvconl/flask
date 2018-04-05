@@ -86,7 +86,7 @@ class Comments(db.Model):
         self.created_at = datetime.datetime.now()
 
     def __repr__(self):
-        return "[Content] id:`{}`,blog_id:`{}`,blog_name:`{}`,user_id:`{}`,user_name:`{}`,user_image:`{}`,content:`{}`,likeCount,created_at:`{}`".format(
+        return "[Content] id:`{}`,blog_id:`{}`,blog_name:`{}`,user_id:`{}`,user_name:`{}`,user_image:`{}`,content:`{}`,likeCount:`{}`,created_at:`{}`".format(
             self.id,self.blog_id,self.blog_name,self.user_id,self.user_name,self.user_image,self.content,self.likeCount,self.created_at
         )
 
