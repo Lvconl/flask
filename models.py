@@ -71,6 +71,7 @@ class Comments(db.Model):
     user_name = db.Column(db.String(255))
     user_image = db.Column(db.LargeBinary(length = 2048))
     content = db.Column(db.Text())
+    likeCount = db.Column(db.Integer())
     created_at = db.Column(db.DateTime())
 
     def __init__(self,id,blog_id,blog_name,user_id,user_name,user_image,content):
@@ -81,9 +82,27 @@ class Comments(db.Model):
         self.user_name = user_name
         self.user_image = user_image
         self.content = content
+        self.likeCount = 0
         self.created_at = datetime.datetime.now()
 
     def __repr__(self):
-        return "[Content] id:`{}`,blog_id:`{}`,blog_name:`{}`,user_id:`{}`,user_name:`{}`,user_image:`{}`,content:`{}`,created_at:`{}`".format(
-            self.id,self.blog_id,self.blog_name,self.user_id,self.user_name,self.user_image,self.content,self.created_at
+        return "[Content] id:`{}`,blog_id:`{}`,blog_name:`{}`,user_id:`{}`,user_name:`{}`,user_image:`{}`,content:`{}`,likeCount,created_at:`{}`".format(
+            self.id,self.blog_id,self.blog_name,self.user_id,self.user_name,self.user_image,self.content,self.likeCount,self.created_at
+        )
+
+class Likes(db.Model):
+    id = db.Column(db.String(255),primary_key = True)
+    comment_id = db.Column(db.String(255))
+    user_id = db.Column(db.String(255))
+    created_at = db.Column(db.DateTime())
+
+    def __init__(self,id,comment_id,user_id):
+        self.id = id
+        self.comment_id = comment_id
+        self.user_id = user_id
+        self.created_at = datetime.datetime.now()
+
+    def __repr__(self):
+        return "[Like] id:`{}`,comment_id:`{}`,user_id:`{}`,created_at:`{}`".format(
+            self.id,self.comment_id,self.user_id,self.created_at
         )

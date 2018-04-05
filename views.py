@@ -246,22 +246,27 @@ def blog_edit(id):
         db.session.commit()
         return redirect('/')
 
-@app.route('/user/editImage',methods = ['GET','POST'])
+
+@app.route('/user/edit',methods = ['GET','POST'])
 def user_edit():
     user = checkUser()
     if user == '':
         return redirect('/')
     form = UserInfoForm()
-    if request.method == 'GET':
-        return render_template(
-            'user_edit.html',
-            form = form,
-            user = user,
-            base64 = base64
-        )
-    if form.validate_on_submit():
-        image = form.image.read()
+    return render_template(
+        'user_edit.html',
+        form=form,
+        user=user,
+        base64=base64
+    )
+
+@app.route('/user/editImage',methods = ['GET','POST'])
+def user_editImage():
+    user = checkUser()
+    if request.method == 'POST':
+        image = request.files['image'].read()
         Users.query.filter_by(id = user.id).update({'image':image})
+        db.session.commit()
         return redirect('/')
 
 @app.route('/user/<id>')

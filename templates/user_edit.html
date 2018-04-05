@@ -12,6 +12,7 @@
                 },
                 success:function (data) {
                     alert(data);
+                    parent.location.reload();
                 }
             });
         });
@@ -21,7 +22,6 @@
 {% block content %}
     <div style="background-color: white;border-radius: 10px;margin-top: 10px;">
     <div style="margin-left: 20px;">
-        <form method="POST" enctype="multipart/form-data">
         {{ form.hidden_tag() }}
             <div>
                 <label>账号创建时间:&nbsp;&nbsp;&nbsp;{{ user.created_at }}</label>
@@ -50,7 +50,6 @@
                 <button type="submit" style="border-radius: 5px; border: none;background-color: #0f88eb;color: white;font-size: 16px;margin-top: 10px;margin-bottom: 10px;"  id="update">确认修改</button>
                 <a href="/" style="margin-left: 10px;font-size: 16px;">取消</a>
             </div>
-        </form>
     </div>
     </div>
 {% endblock %}

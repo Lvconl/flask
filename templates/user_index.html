@@ -7,11 +7,14 @@
     <div class="main">
     <article style="margin-left: 30px;">
         <div class="userInfo">
-        <form action="/user/editImage" method="post">
+        <form action="/user/editImage" method="post" enctype="multipart/form-data">
         {% if user_info.image %}
-            <div>
+            <div style="">
             <img src="data:;base64,{{ base64.b64encode(user_info.image).decode('utf-8') }}" width="150" height="150" id="userInfoImage">
             {{ form.image}}
+            </div>
+            <div>
+                <button type="submit" style="border-radius: 5px; border: none;background-color: #0f88eb;color: white;font-size: 16px;margin-top: 10px;margin-bottom: 10px;"  id="update">确认修改</button>
             </div>
             {% else %}
             <div>
