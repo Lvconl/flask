@@ -2,6 +2,8 @@
 {% block title %}{{ blog.name }}{% endblock %}
 {% block beforehead %}
     <link rel="stylesheet" href="../static/css/comment.css">
+    <link type="text/css" rel="stylesheet" href="../static/css/jquery.toast.css">
+    <script type="text/javascript" src="../static/js/jquery.toast.js"></script>
     <script>
     $(document).ready(function () {
         $(".btn_delete_comment").click(function () {
@@ -22,30 +24,44 @@
             });
         });
         $(".btn_like_comment").click(function () {
-            var id = $(this).attr("id");
+            var id = $(this).attr("value");
+            var count = parseInt($("#count_" + id).attr("value"));
             $.ajax({
                 url:"/ajax/comment/like",
                 data:{
                     "id":id
                 },
                 success:function (data) {
-                    alert(data);
-                    $("#unlike" + id).hide();
-                    $("#like" + id).show();
+                    $("#btn_like_" + id).hide();
+                    $("#btn_unlike_" + id).show();
+                    $.toast({
+                    heading: data,
+                    text: "你成功的赞了别人一下ヾ(*´▽‘*)ﾉ",
+                    showHideTransition: 'slide',
+                    icon: 'success',
+                    hideAfter: 1500
+                    });
                 }
             });
         });
         $(".btn_unlike_comment").click(function () {
-            var id = $(this).attr("id");
+            var id = $(this).attr("value");
+            var count = parseInt($("#count_" + id).attr("value"));
             $.ajax({
                 url:"/ajax/comment/unlike",
                 data:{
                     "id":id
                 },
                 success:function (data) {
-                    alert(data);
-                    $("#unlike" + id).show();
-                    $("#like" + id).hide();
+                    $("#btn_unlike_" + id).hide();
+                    $("#btn_like_" + id).show();
+                    $.toast({
+                    heading: data,
+                    text: '你取消了对别人的赞π__π ',
+                    showHideTransition: 'fade',
+                    icon: 'error',
+                    hideAfter: 1500
+                    });
                 }
             });
         });
@@ -125,16 +141,22 @@
                                 <button class="btn_delete_comment" id="{{ comment.id }}">删除该评论</button>
                             {% else %}
                                 {% if comment.canLike %}
-                                    <button class="btn_unlike_comment" id="{{ comment.id }}">
+                                    <button class="btn_unlike_comment" id="btn_unlike_{{ comment.id }}" value="{{ comment.id }}">
                                         <span id="like{{ comment.id }}"><img src="../static/img/like.png" width="25" height="25"></span>
-                                        <span id="unlike{{ comment.id }}" style="display: none;"><img src="../static/img/unlike.png" width="25" height="25" ></span>
-                                        {{ comment.likeCount }}
+                                        <label id="count_{{ comment.id }}" value="{{ comment.likeCount }}">{{ comment.likeCount }}</label>
+                                    </button>
+                                    <button class="btn_like_comment" id="btn_like_{{ comment.id }}" style="display: none;" value="{{ comment.id }}">
+                                        <span id="unlike{{ comment.id }}"><img src="../static/img/unlike.png" width="25" height="25"></span></span>
+                                        <label id="count_{{ comment.id }}" value="{{ comment.likeCount }}">{{ comment.likeCount - 1 }}</label>
                                     </button>
                                 {% else %}
-                                    <button class="btn_like_comment" id="{{ comment.id }}">
-                                        <span id="unlike{{ comment.id }}"><img src="../static/img/unlike.png" width="25" height="25"></span>
-                                        <span id="like{{ comment.id }}" style="display: none;"><img src="../static/img/like.png" width="25" height="25"></span>
-                                        {{ comment.likeCount }}
+                                    <button class="btn_like_comment" id="btn_like_{{ comment.id }}" value="{{ comment.id }}">
+                                        <span id="unlike{{ comment.id }}"><img src="../static/img/unlike.png" width="25" height="25"></span></span>
+                                        <label id="count_{{ comment.id }}" value="{{ comment.likeCount }}">{{ comment.likeCount }}</label>
+                                    </button>
+                                    <button class="btn_unlike_comment" id="btn_unlike_{{ comment.id }}" style="display: none;" value="{{ comment.id }}">
+                                        <span id="{{ comment.id }}"><img src="../static/img/like.png" width="25" height="25"></span>
+                                        <label id="count_{{ comment.id }}" value="{{ comment.likeCount }}">{{ comment.likeCount + 1 }}</label>
                                     </button>
                                 {% endif %}
                             {% endif %}
